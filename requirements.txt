@@ -5,3 +5,4 @@ ipykernel
 langsmith
 langgraph-cli[inmem]
 langchain-groq
+openaq
