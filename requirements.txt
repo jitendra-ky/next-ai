@@ -1,0 +1,7 @@
+langchain
+langchain-google-genai
+python-dotenv
+ipykernel
+langsmith
+langgraph-cli[inmem]
+langchain-groq
