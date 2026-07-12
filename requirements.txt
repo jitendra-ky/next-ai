@@ -6,3 +6,7 @@ langsmith
 langgraph-cli[inmem]
 langchain-groq
 openaq
+
+geopandas
+osmnx
+
