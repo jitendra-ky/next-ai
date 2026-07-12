@@ -4,7 +4,7 @@ from src.services.traffic_service import get_traffic_data
 
 
 @tool
-def TRAFFIC_TOOL(ward_no: int):
+def traffic_tool(ward_no: int):
     """
     Get real-time traffic information for a ward.
 

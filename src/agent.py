@@ -10,7 +10,7 @@ from langchain_core.tools import tool
 from langchain_groq import ChatGroq
 
 from src.aqi_tools import CAAQMS_TOOLS
-from src.traffic_tools import TRAFFIC_TOOL
+from src.traffic_tools import traffic_tool
 
 
 @tool
@@ -25,6 +25,6 @@ def calculator(expression: str) -> str:
 llm = ChatGroq(model="llama-3.3-70b-versatile")
 agent = create_agent(
     model=llm,
-    tools=[calculator] + CAAQMS_TOOLS + TRAFFIC_TOOL,
+    tools=[calculator] + CAAQMS_TOOLS + traffic_tool,
 )
 
