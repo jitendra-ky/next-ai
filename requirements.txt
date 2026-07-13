@@ -7,3 +7,7 @@ langgraph-cli[inmem]
 langchain-groq
 openaq
 ruff
+
+geopandas
+osmnx
+
