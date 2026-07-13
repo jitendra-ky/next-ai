@@ -4,9 +4,10 @@ Set OPENAQ_API_KEY before use. Get a free key at https://explore.openaq.org
 """
 
 import os
-import requests
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from statistics import mean
+
+import requests
 from langchain_core.tools import tool
 
 BASE_URL = "https://api.openaq.org/v3"
@@ -68,7 +69,7 @@ def get_station_air_quality_snapshot(location_id: int, lookback_hours: int = 6) 
     last N hours (rising/falling/stable)."""
     location = _get(f"/locations/{location_id}")[0]
     latest = {row["sensorsId"]: row for row in _get(f"/locations/{location_id}/latest")}
-    since = (datetime.now(timezone.utc) - timedelta(hours=lookback_hours)).isoformat()
+    since = (datetime.now(UTC) - timedelta(hours=lookback_hours)).isoformat()
 
     readings = []
     for sensor in location.get("sensors", []):
@@ -101,7 +102,7 @@ def get_historical_baseline(location_id: int, parameter: str, days: int = 14) ->
     if not sensor:
         return {"error": f"No '{parameter}' sensor at station {location_id}"}
 
-    since = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    since = (datetime.now(UTC) - timedelta(days=days)).isoformat()
     daily = _get(f"/sensors/{sensor['id']}/days", {"datetime_from": since, "limit": 366})
     values = [d["value"] for d in daily if d.get("value") is not None]
     if not values:

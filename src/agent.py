@@ -6,10 +6,9 @@ LangGraph graph or an object created by create_agent(). It does NOT
 run this file directly with python — it's imported by `langgraph dev`.
 """
 
-from langchain_core.tools import tool
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_groq import ChatGroq
 from langchain.agents import create_agent
+from langchain_core.tools import tool
+from langchain_groq import ChatGroq
 
 from src.aqi_tools import CAAQMS_TOOLS
 
