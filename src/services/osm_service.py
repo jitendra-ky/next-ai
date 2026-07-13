@@ -1,4 +1,5 @@
 import osmnx as ox
+from shapely.geometry import Polygon
 
 MAJOR_ROADS = [
     "motorway",
@@ -14,7 +15,7 @@ MAJOR_ROADS = [
 ]
 
 
-def get_major_roads(polygon):
+def get_major_roads(polygon: Polygon):
 
     graph = ox.graph_from_polygon(polygon, network_type="drive")
 
@@ -25,7 +26,7 @@ def get_major_roads(polygon):
             lambda x: any(
                 road in MAJOR_ROADS
                 for road in (x if isinstance(x, list) else [x])
-            )
+            ),
         )
     ].copy()
 

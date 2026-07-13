@@ -53,7 +53,7 @@ def get_traffic_data(ward_no: int):
         "average_congestion": round(avg_congestion, 2),
 
         "roads": len(roads),
-        "closed_roads": int(roads["road_closed"].fillna(False).sum()),
-        "confidence": round(roads["confidence"].mean(),2)
+        "closed_roads": int(roads["road_closed"].fillna(value=False).sum()),
+        "confidence": round(roads["confidence"].mean(),2),
 
     }

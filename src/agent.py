@@ -25,6 +25,6 @@ def calculator(expression: str) -> str:
 llm = ChatGroq(model="llama-3.3-70b-versatile")
 agent = create_agent(
     model=llm,
-    tools=[calculator] + CAAQMS_TOOLS + traffic_tool,
+    tools=[calculator, *CAAQMS_TOOLS, *traffic_tool],
 )
 

@@ -1,4 +1,5 @@
 import os
+
 import requests
 
 API_KEY = os.getenv("TOMTOM_API_KEY")
@@ -9,11 +10,11 @@ BASE_URL = (
 )
 
 
-def get_flow(lat, lon):
+def get_flow(lat: float, lon: float):
 
     params = {
         "key": API_KEY,
-        "point": f"{lat},{lon}"
+        "point": f"{lat},{lon}",
     }
 
     try:
@@ -21,7 +22,7 @@ def get_flow(lat, lon):
         r = requests.get(
             BASE_URL,
             params=params,
-            timeout=10
+            timeout=10,
         )
 
         r.raise_for_status()
@@ -43,7 +44,7 @@ def get_flow(lat, lon):
 
             "confidence": flow["confidence"],
 
-            "road_closed": flow["roadClosure"]
+            "road_closed": flow["roadClosure"],
 
         }
 
