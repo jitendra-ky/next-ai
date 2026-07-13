@@ -1,6 +1,6 @@
-"""
-Minimal CAAQMS (OpenAQ) tools for the AQI agent.
-Set OPENAQ_API_KEY before use. Get a free key at https://explore.openaq.org
+"""Minimal CAAQMS (OpenAQ) tools for the AQI agent.
+
+Set OPENAQ_API_KEY before use. Get a free key at https://explore.openaq.org.
 """
 
 import os
@@ -14,7 +14,7 @@ BASE_URL = "https://api.openaq.org/v3"
 HEADERS = {"X-API-Key": os.environ.get("OPENAQ_API_KEY", "")}
 
 
-def _get(path, params=None):
+def _get(path: str, params: dict | None = None) -> list:
     resp = requests.get(f"{BASE_URL}{path}", headers=HEADERS, params=params, timeout=10)
     resp.raise_for_status()
     return resp.json().get("results", [])
@@ -23,7 +23,9 @@ def _get(path, params=None):
 @tool
 def geocode_place(place_name: str) -> dict:
     """Convert a place name (locality, ward, landmark) to latitude/longitude.
-    Always call this before find_nearby_stations if you only have a place name."""
+
+    Always call this before find_nearby_stations if you only have a place name.
+    """
     resp = requests.get(
         "https://nominatim.openstreetmap.org/search",
         params={"q": place_name, "format": "json", "limit": 1},
@@ -42,8 +44,11 @@ def geocode_place(place_name: str) -> dict:
 
 @tool
 def find_nearby_stations(latitude: float, longitude: float, radius_km: float = 5.0) -> dict:
-    """Find CAAQMS stations near a point. Returns location_id, name, and
-    pollutants measured — use this first to get a location_id for the other tools."""
+    """Find CAAQMS stations near a point.
+
+    Returns location_id, name, and pollutants measured — use this first to get
+    a location_id for the other tools.
+    """
     locations = _get("/locations", {
         "coordinates": f"{latitude},{longitude}",
         "radius": int(min(radius_km, 25) * 1000),
@@ -55,18 +60,20 @@ def find_nearby_stations(latitude: float, longitude: float, radius_km: float = 5
                 "location_id": loc["id"],
                 "name": loc.get("name"),
                 "parameters_measured": sorted(
-                    {s["parameter"]["name"] for s in loc.get("sensors", [])}
+                    {s["parameter"]["name"] for s in loc.get("sensors", [])},
                 ),
             }
             for loc in locations
-        ]
+        ],
     }
 
 
 @tool
 def get_station_air_quality_snapshot(location_id: int, lookback_hours: int = 6) -> dict:
-    """Latest reading per pollutant at a station, plus the % change over the
-    last N hours (rising/falling/stable)."""
+    """Latest reading per pollutant at a station.
+
+    Includes the % change over the last N hours (rising/falling/stable).
+    """
     location = _get(f"/locations/{location_id}")[0]
     latest = {row["sensorsId"]: row for row in _get(f"/locations/{location_id}/latest")}
     since = (datetime.now(UTC) - timedelta(hours=lookback_hours)).isoformat()
@@ -84,10 +91,10 @@ def get_station_air_quality_snapshot(location_id: int, lookback_hours: int = 6) 
             "parameter": sensor["parameter"]["name"],
             "latest_value": row["value"],
         }
-        if len(values) >= 2:
+        if len(values) >= 2: # noqa: PLR2004
             pct = (values[-1] - values[0]) / values[0] * 100 if values[0] else 0
             entry["percent_change"] = round(pct, 1)
-            entry["trend"] = "rising" if pct > 5 else "falling" if pct < -5 else "stable"
+            entry["trend"] = "rising" if pct > 5 else "falling" if pct < -5 else "stable" # noqa: PLR2004
         readings.append(entry)
 
     return {"location_id": location_id, "station_name": location.get("name"), "readings": readings}
@@ -95,8 +102,10 @@ def get_station_air_quality_snapshot(location_id: int, lookback_hours: int = 6) 
 
 @tool
 def get_historical_baseline(location_id: int, parameter: str, days: int = 14) -> dict:
-    """Daily-average history for one pollutant at a station over the past N
-    days (mean/max/min) — grounds 'similar conditions -> AQI X' claims."""
+    """Daily-average history for one pollutant at a station over the past N days.
+
+    Returns mean/max/min — grounds 'similar conditions -> AQI X' claims.
+    """
     location = _get(f"/locations/{location_id}")[0]
     sensor = next((s for s in location["sensors"] if s["parameter"]["name"] == parameter), None)
     if not sensor:
@@ -116,4 +125,9 @@ def get_historical_baseline(location_id: int, parameter: str, days: int = 14) ->
     }
 
 
-CAAQMS_TOOLS = [geocode_place, find_nearby_stations, get_station_air_quality_snapshot, get_historical_baseline]
+CAAQMS_TOOLS = [
+    geocode_place,
+    find_nearby_stations,
+    get_station_air_quality_snapshot,
+    get_historical_baseline,
+    ]
