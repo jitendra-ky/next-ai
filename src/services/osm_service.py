@@ -1,3 +1,9 @@
+"""Utilities for extracting road geometries from OpenStreetMap via osmnx.
+
+This module provides helpers to filter and transform road data used
+by the traffic analysis tools.
+"""
+
 import osmnx as ox
 from shapely.geometry import Polygon
 
@@ -16,7 +22,16 @@ MAJOR_ROADS = [
 
 
 def get_major_roads(polygon: Polygon):
+    """Return a GeoDataFrame of major roads that intersect a polygon.
 
+    Args:
+        polygon: The polygon to query for driving roads.
+
+    Returns:
+        A GeoDataFrame filtered to major road types with `lat`/`lon`
+        midpoint columns added.
+
+    """
     graph = ox.graph_from_polygon(polygon, network_type="drive")
 
     _, edges = ox.graph_to_gdfs(graph)
@@ -30,7 +45,7 @@ def get_major_roads(polygon: Polygon):
         )
     ].copy()
 
-    roads["midpoint"] = roads.geometry.interpolate(0.5,normalized=True)
+    roads["midpoint"] = roads.geometry.interpolate(0.5, normalized=True)
 
     roads["lat"] = roads.midpoint.y
     roads["lon"] = roads.midpoint.x

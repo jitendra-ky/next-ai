@@ -15,10 +15,6 @@ ignore = [
     "S106",    # Possible hardcoded password assigned to argument
     "PT009",   # Use a regular `assert` instead of unittest-style `assertEqual`
     "ANN201",  # Missing return type annotation for public function
-    "D100",    # Missing docstring in public module
-    "D101",    # Missing docstring in public class
-    "D103",    # Missing docstring in public function
-    "D104",    # Missing docstring in public package
     "EM101",   # Exception must not use a string literal, assign to variable first
     "RUF012",  # Mutable class attributes should be annotated with `typing.ClassVar`
     "S105",    # Possible hardcoded password assigned to variable
@@ -30,3 +26,8 @@ ignore = [
 indent-style = "space"
 quote-style = "double"
 skip-magic-trailing-comma = false
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]

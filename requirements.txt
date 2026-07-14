@@ -10,4 +10,5 @@ ruff
 
 geopandas
 osmnx
-
+pytest
+pytest-mock

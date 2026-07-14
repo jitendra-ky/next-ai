@@ -1,3 +1,9 @@
+"""Tool wrappers exposing traffic-related functions to LangChain.
+
+This module provides small adapters that expose internal functions
+as tools for external orchestration frameworks.
+"""
+
 from langchain_core.tools import tool
 
 from src.services.traffic_service import get_traffic_data
