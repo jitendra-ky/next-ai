@@ -1,10 +1,26 @@
+"""High-level traffic aggregation utilities.
+
+This module composes lower-level services to compute ward-level
+traffic summaries used by the application and tools.
+"""
+
 from src.services.geo_loader import get_polygon
 from src.services.osm_service import get_major_roads
 from src.services.tomtom_service import get_flow
 
 
 def get_traffic_data(ward_no: int):
+    """Compute aggregated traffic statistics for a ward.
 
+    Args:
+        ward_no: The ward number to analyze.
+
+    Returns:
+        A dictionary containing aggregated statistics such as
+        `average_speed`, `average_congestion`, number of roads,
+        closed roads and mean confidence.
+
+    """
     polygon = get_polygon(ward_no)
 
     roads = get_major_roads(polygon)
@@ -40,20 +56,20 @@ def get_traffic_data(ward_no: int):
     roads = roads.dropna()
 
     roads["congestion"] = (
-        1- roads["speed"]/roads["free_speed"]) *100
+        1 - roads["speed"] / roads["free_speed"]
+    ) * 100
 
-    avg_speed = (roads["speed"] * roads["length"]).sum() /roads["length"].sum()
+    avg_speed = (roads["speed"] * roads["length"]).sum() / roads["length"].sum()
 
-    avg_congestion = (roads["congestion"] * roads["length"]).sum() / roads["length"].sum()
+    avg_congestion = (
+        (roads["congestion"] * roads["length"]).sum() / roads["length"].sum()
+    )
 
     return {
-
         "ward": ward_no,
         "average_speed": round(avg_speed, 2),
         "average_congestion": round(avg_congestion, 2),
-
         "roads": len(roads),
         "closed_roads": int(roads["road_closed"].fillna(value=False).sum()),
-        "confidence": round(roads["confidence"].mean(),2),
-
+        "confidence": round(roads["confidence"].mean(), 2),
     }

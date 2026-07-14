@@ -1,3 +1,8 @@
+"""Unit tests for `src.aqi_tools`.
+
+These tests verify the geocoding tool behavior under common scenarios.
+"""
+
 import unittest
 from unittest.mock import MagicMock, Mock, patch
 
