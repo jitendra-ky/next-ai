@@ -17,8 +17,12 @@ Requires: requests  (pip install requests)
 import argparse
 import json
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import requests
+
+# Default data directory relative to this file
+DATA_DIR = Path(__file__).parent.parent / "data"
 
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
 AIR_QUALITY_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
@@ -135,9 +139,24 @@ def find_worst_window(records: list, window_hours: int = 3, lookahead_hours: int
     return best
 
 
-def build_evidence_summary(name: str, lat: float, lon: float) -> dict:
+def build_evidence_summary(name: str, lat: float, lon: float, save_raw: bool = True, data_dir: Path = None) -> dict:
     weather = fetch_weather(lat, lon)
     aq = fetch_air_quality(lat, lon)
+
+    # Save raw fetched data to data folder
+    if save_raw:
+        save_dir = data_dir or DATA_DIR
+        save_dir.mkdir(parents=True, exist_ok=True)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        weather_file = save_dir / f"weather_{timestamp}.json"
+        with open(weather_file, "w") as f:
+            json.dump(weather, f, indent=2)
+        
+        aq_file = save_dir / f"air_quality_{timestamp}.json"
+        with open(aq_file, "w") as f:
+            json.dump(aq, f, indent=2)
 
     records = build_hourly_records(weather)
     current = records[0]
@@ -172,9 +191,14 @@ def main():
     parser.add_argument("--lon", type=float, required=True, help="Longitude")
     parser.add_argument("--name", type=str, default="Location", help="Human-readable location name")
     parser.add_argument("--out", type=str, default="met_evidence.json", help="Output JSON path")
+    parser.add_argument("--no-save-raw", action="store_true", help="Disable saving raw fetched data")
+    parser.add_argument("--data-dir", type=str, default=None, help="Custom data directory for raw files")
     args = parser.parse_args()
 
-    summary = build_evidence_summary(args.name, args.lat, args.lon)
+    data_dir = Path(args.data_dir) if args.data_dir else None
+    summary = build_evidence_summary(args.name, args.lat, args.lon, 
+                                     save_raw=not args.no_save_raw, 
+                                     data_dir=data_dir)
 
     with open(args.out, "w") as f:
         json.dump(summary, f, indent=2)
