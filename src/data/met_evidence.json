@@ -1,0 +1,34 @@
+{
+  "location": {
+    "name": "lko,lucknow",
+    "latitude": 26.85,
+    "longitude": 80.95
+  },
+  "generated_at": "2026-07-14T18:35",
+  "current_conditions": {
+    "time": "2026-07-14T00:00",
+    "temperature_c": 30.3,
+    "humidity_pct": 67,
+    "wind_speed_kmh": 11.2,
+    "wind_direction_deg": 251,
+    "pbl_height_m": 345.0,
+    "precipitation_mm": 0.0,
+    "ventilation_coefficient": 1073.3,
+    "dispersion_risk": "HIGH",
+    "inversion_risk": false
+  },
+  "predicted_worst_dispersion_window": {
+    "start_time": "2026-07-15T21:00",
+    "end_time": "2026-07-15T23:00",
+    "avg_ventilation_coefficient": 17.7,
+    "avg_wind_kmh": 1.6,
+    "avg_pbl_height_m": 31.7,
+    "inversion_expected": false,
+    "dispersion_risk": "HIGH"
+  },
+  "cams_background_pm2_5_ugm3": 47.4,
+  "evidence_table_row": {
+    "source": "Meteorological Forecast",
+    "evidence": "Wind expected to drop to 1.6 km/h and boundary layer height to ~32 m between 2026-07-15T21:00 and 2026-07-15T23:00, giving a dispersion risk of HIGH."
+  }
+}
