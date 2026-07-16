@@ -27,8 +27,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Ruff Linter
-      run: ruff check .
+    - name: Run pre-commit hooks
+      run: pre-commit run --all-files
 
     - name: Run Pytest
       run: pytest tests/
