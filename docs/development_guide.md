@@ -8,6 +8,22 @@ This guide outlines the recommended development workflow to help maintain code q
 * Fixing issues immediately is much easier than rewriting commit history or adding follow-up commits just to resolve broken code.
 * Always verify your changes locally before opening or updating a pull request.
 
+## Pre-commit Hooks
+
+This project uses `pre-commit` to automatically run code quality tools (like Ruff) before every commit. This ensures code consistency and catches simple issues early.
+
+**To set up pre-commit:**
+
+1. Ensure it's installed (it's included in `requirements.txt`).
+2. Run the following command from the project root to install the git hooks:
+   ```bash
+   pre-commit install
+   ```
+3. To manually run pre-commit against all files:
+   ```bash
+   pre-commit run --all-files
+   ```
+
 ---
 
 # Running Tests

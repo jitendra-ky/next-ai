@@ -19,6 +19,11 @@ ignore = [
     "RUF012",  # Mutable class attributes should be annotated with `typing.ClassVar`
     "S105",    # Possible hardcoded password assigned to variable
     "TRY003",  # Avoid specifying long messages outside the exception class
+    "COM812",  # Trailing comma missing
+    "ISC001",  # Implicit string concatenation
+    "ANN101",  # Missing type annotation for `self` in method
+    "D203",    # 1 blank line required before class docstring
+    "D213",    # Multi-line docstring summary should start at the second line
 ]
 
 [tool.ruff.format]
