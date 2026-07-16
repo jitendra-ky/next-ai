@@ -15,4 +15,3 @@ __all__ = [
     "get_polygon",
     "get_traffic_data",
 ]
-

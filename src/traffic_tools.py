@@ -14,9 +14,11 @@ def traffic_tool(ward_no: int):
     """Get real-time traffic information for a ward.
 
     Args:
+    ----
         ward_no: Ward number.
 
     Returns:
+    -------
         Dictionary containing traffic statistics.
 
     """

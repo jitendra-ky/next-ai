@@ -25,9 +25,11 @@ def get_major_roads(polygon: Polygon):
     """Return a GeoDataFrame of major roads that intersect a polygon.
 
     Args:
+    ----
         polygon: The polygon to query for driving roads.
 
     Returns:
+    -------
         A GeoDataFrame filtered to major road types with `lat`/`lon`
         midpoint columns added.
 
@@ -38,10 +40,7 @@ def get_major_roads(polygon: Polygon):
 
     roads = edges[
         edges["highway"].apply(
-            lambda x: any(
-                road in MAJOR_ROADS
-                for road in (x if isinstance(x, list) else [x])
-            ),
+            lambda x: any(road in MAJOR_ROADS for road in (x if isinstance(x, list) else [x])),
         )
     ].copy()
 

@@ -64,7 +64,7 @@ pytest tests/test_aqi_tools.py
 
 This project frequently interacts with external APIs (like OpenAQ, Nominatim, and TomTom). **Do not make real network requests during unit tests.**
 
-Always use the `@patch` decorator from `unittest.mock` to intercept external calls. 
+Always use the `@patch` decorator from `unittest.mock` to intercept external calls.
 
 **Best Practices for Mocking:**
 1. **Target the exact import location:** Mock the object exactly where it is used. For example, if `src/aqi_tools.py` imports `requests` and calls `requests.get`, you should patch `"src.aqi_tools.requests.get"`.

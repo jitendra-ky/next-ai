@@ -49,11 +49,14 @@ def find_nearby_stations(latitude: float, longitude: float, radius_km: float = 5
     Returns location_id, name, and pollutants measured — use this first to get
     a location_id for the other tools.
     """
-    locations = _get("/locations", {
-        "coordinates": f"{latitude},{longitude}",
-        "radius": int(min(radius_km, 25) * 1000),
-        "limit": 25,
-    })
+    locations = _get(
+        "/locations",
+        {
+            "coordinates": f"{latitude},{longitude}",
+            "radius": int(min(radius_km, 25) * 1000),
+            "limit": 25,
+        },
+    )
     return {
         "stations": [
             {
@@ -91,10 +94,10 @@ def get_station_air_quality_snapshot(location_id: int, lookback_hours: int = 6) 
             "parameter": sensor["parameter"]["name"],
             "latest_value": row["value"],
         }
-        if len(values) >= 2: # noqa: PLR2004
+        if len(values) >= 2:  # noqa: PLR2004
             pct = (values[-1] - values[0]) / values[0] * 100 if values[0] else 0
             entry["percent_change"] = round(pct, 1)
-            entry["trend"] = "rising" if pct > 5 else "falling" if pct < -5 else "stable" # noqa: PLR2004
+            entry["trend"] = "rising" if pct > 5 else "falling" if pct < -5 else "stable"  # noqa: PLR2004
         readings.append(entry)
 
     return {"location_id": location_id, "station_name": location.get("name"), "readings": readings}
@@ -130,4 +133,4 @@ CAAQMS_TOOLS = [
     find_nearby_stations,
     get_station_air_quality_snapshot,
     get_historical_baseline,
-    ]
+]

@@ -12,3 +12,4 @@ geopandas
 osmnx
 pytest
 pytest-mock
+pre-commit
