@@ -13,9 +13,11 @@ def get_traffic_data(ward_no: int):
     """Compute aggregated traffic statistics for a ward.
 
     Args:
+    ----
         ward_no: The ward number to analyze.
 
     Returns:
+    -------
         A dictionary containing aggregated statistics such as
         `average_speed`, `average_congestion`, number of roads,
         closed roads and mean confidence.
@@ -31,11 +33,9 @@ def get_traffic_data(ward_no: int):
     road_closed = []
 
     for row in roads.itertuples():
-
         flow = get_flow(row.lat, row.lon)
 
         if flow is None:
-
             speed.append(None)
             free_speed.append(None)
             confidence.append(None)
@@ -55,15 +55,11 @@ def get_traffic_data(ward_no: int):
 
     roads = roads.dropna()
 
-    roads["congestion"] = (
-        1 - roads["speed"] / roads["free_speed"]
-    ) * 100
+    roads["congestion"] = (1 - roads["speed"] / roads["free_speed"]) * 100
 
     avg_speed = (roads["speed"] * roads["length"]).sum() / roads["length"].sum()
 
-    avg_congestion = (
-        (roads["congestion"] * roads["length"]).sum() / roads["length"].sum()
-    )
+    avg_congestion = (roads["congestion"] * roads["length"]).sum() / roads["length"].sum()
 
     return {
         "ward": ward_no,

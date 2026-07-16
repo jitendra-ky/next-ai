@@ -18,7 +18,7 @@ class TestAQITools(unittest.TestCase):
         # class-level instantiation would go in an OOP structure.
 
     @patch("src.aqi_tools.requests.get")
-    def test_geocode_place_success(self, mock_get : MagicMock):
+    def test_geocode_place_success(self, mock_get: MagicMock):
         """To test the src.api_tools.geocode_place function with a successful response."""
         # Create a mock response object
         mock_response = Mock()
@@ -35,14 +35,17 @@ class TestAQITools(unittest.TestCase):
         self.assertEqual(kwargs["params"]["q"], "New York")
 
         # Assert the returned dictionary matches expectations
-        self.assertEqual(result, {
-            "place_name": "New York",
-            "latitude": 40.7128,
-            "longitude": -74.0060,
-        })
+        self.assertEqual(
+            result,
+            {
+                "place_name": "New York",
+                "latitude": 40.7128,
+                "longitude": -74.0060,
+            },
+        )
 
     @patch("src.aqi_tools.requests.get")
-    def test_geocode_place_not_found(self, mock_get : MagicMock):
+    def test_geocode_place_not_found(self, mock_get: MagicMock):
         """To test the src.api_tools.geocode_place function with a not found response."""
         # Create a mock response object returning empty list
         mock_response = Mock()

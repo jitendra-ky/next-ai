@@ -104,6 +104,3 @@ AI platform that generates ward-level health risk alerts, maps population vulner
 |Technical Excellence|20%|
 |Scalability|15%|
 |User Experience|15%|
-
-
-

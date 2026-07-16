@@ -17,12 +17,15 @@ def get_polygon(ward_no: int):
     """Return the polygon geometry for a ward number.
 
     Args:
+    ----
         ward_no: The ward number to look up.
 
     Returns:
+    -------
         A ``shapely.geometry`` Polygon representing the ward boundary.
 
     Raises:
+    ------
         ValueError: If the ward number cannot be found in the dataset.
 
     """
