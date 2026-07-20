@@ -20,7 +20,7 @@ class OverpassService:
 
     @classmethod
     def fetch_construction_elements(
-        cls,
+        cls: type["OverpassService"],
         lat: float,
         lon: float,
         radius_km: float,
@@ -29,12 +29,14 @@ class OverpassService:
         """Fetch construction-tagged OSM elements near a location.
 
         Args:
+        ----
             lat: Latitude of the center point.
             lon: Longitude of the center point.
             radius_km: Search radius in kilometers.
             timeout: Overpass API timeout in seconds.
 
         Returns:
+        -------
             List of OSM element dicts matching construction queries.
 
         """

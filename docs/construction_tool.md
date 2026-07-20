@@ -40,7 +40,7 @@ sequenceDiagram
     Agent->>Tool: invoke(lat, lon, radius_km)
     Tool->>Service: get_sites(lat, lon, radius_km)
     Service->>Overpass: fetch_construction_elements(lat, lon, radius_km)
-    
+
     loop For each mirror
         Overpass->>API: POST query (node + way)
         alt Success
@@ -49,9 +49,9 @@ sequenceDiagram
             Overpass->>Overpass: Try next mirror
         end
     end
-    
+
     Overpass-->>Service: elements list
-    
+
     loop For each element
         Service->>Service: classify(tags)
         alt confidence is None
@@ -62,7 +62,7 @@ sequenceDiagram
             Service->>Service: Build site dict
         end
     end
-    
+
     Service-->>Tool: list[dict] of sites
     Tool-->>Agent: JSON results
 ```

@@ -17,9 +17,11 @@ class ConstructionService:
         """Classify a construction site's confidence level based on OSM tags.
 
         Args:
+        ----
             tags: OSM element tags dictionary.
 
         Returns:
+        -------
             "high" for active construction zones, "medium" for quarries/construction
             tagged areas, or None if not a construction site.
 
@@ -45,11 +47,13 @@ class ConstructionService:
         """Fetch construction sites near a location.
 
         Args:
+        ----
             lat: Latitude of the center point.
             lon: Longitude of the center point.
             radius_km: Search radius in kilometers (default 3).
 
         Returns:
+        -------
             List of dicts with site_id, lat, lon, confidence, distance_km,
             source_type, and tags for each construction site found.
 

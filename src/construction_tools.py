@@ -16,11 +16,13 @@ def construction_tool(
     """Return nearby construction sites with confidence levels.
 
     Args:
+    ----
         lat: Latitude of the center point.
         lon: Longitude of the center point.
         radius_km: Search radius in kilometers (default 3).
 
     Returns:
+    -------
         List of construction site dicts with site_id, lat, lon, confidence, etc.
 
     """
