@@ -13,3 +13,4 @@ osmnx
 pytest
 pytest-mock
 pre-commit
+geopy
