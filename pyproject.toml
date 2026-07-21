@@ -22,13 +22,9 @@ ignore = [
     "COM812",  # Trailing comma missing
     "ISC001",  # Implicit string concatenation
     "ANN101",  # Missing type annotation for `self` in method
-    "PLR0913", # Too many arguments in function definition
     "D203",    # 1 blank line required before class docstring
     "D213",    # Multi-line docstring summary should start at the second line
 ]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "PLR2004", "D102", "PT027"]
 
 [tool.ruff.format]
 # Format configuration
