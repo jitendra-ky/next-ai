@@ -1,10 +1,12 @@
 langchain
+langchain-core
 langchain-google-genai
+langchain-groq
+langgraph
 python-dotenv
 ipykernel
 langsmith
 langgraph-cli[inmem]
-langchain-groq
 openaq
 ruff
 
@@ -14,3 +16,4 @@ pytest
 pytest-mock
 pre-commit
 geopy
+requests

@@ -26,6 +26,9 @@ ignore = [
     "D213",    # Multi-line docstring summary should start at the second line
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "PLR2004", "D102", "PT027"]
+
 [tool.ruff.format]
 # Format configuration
 indent-style = "space"
