@@ -16,11 +16,13 @@ def fire_detection_tool(
     """Return active fire/hotspot detections near a location from NASA FIRMS.
 
     Args:
+    ----
         lat: Latitude of the search center.
         lon: Longitude of the search center.
         radius_km: Search radius in kilometres (default 10, max 300).
 
     Returns:
+    -------
         List of fire detection dicts with fire_id, lat, lon, frp_mw,
         confidence_pct, brightness_k, scan, track, daynight, acq_date.
 

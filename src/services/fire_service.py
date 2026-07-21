@@ -43,10 +43,12 @@ class FireDetectionService:
         """Initialize with an explicit key or fall back to the FIRMS_API_KEY env var.
 
         Args:
+        ----
             api_key: NASA FIRMS map key.  If *None*, reads ``FIRMS_API_KEY``
                 from the process environment.
 
         Raises:
+        ------
             ValueError: If no API key is available at call time.
 
         """
@@ -56,7 +58,7 @@ class FireDetectionService:
     # Public API
     # ------------------------------------------------------------------
 
-    def get_fires(
+    def get_fires(  # noqa: PLR0913
         self,
         lat: float,
         lon: float,
@@ -68,6 +70,7 @@ class FireDetectionService:
         """Fetch active fire detections near a point from NASA FIRMS.
 
         Args:
+        ----
             lat: Latitude of the search center.
             lon: Longitude of the search center.
             radius_km: Search radius in kilometres (clamped to 300).
@@ -75,10 +78,12 @@ class FireDetectionService:
             days: Number of past days to query (1-5, clamped).
 
         Returns:
+        -------
             List of fire detection dicts with fire_id, lat, lon, frp_mw,
             confidence_pct, brightness_k, scan, track, daynight, acq_date.
 
         Raises:
+        ------
             ValueError: If no API key is available.
 
         """
@@ -102,7 +107,7 @@ class FireDetectionService:
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _build_url(
+    def _build_url(  # noqa: PLR0913
         self,
         lat: float,
         lon: float,
