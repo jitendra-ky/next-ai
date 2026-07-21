@@ -52,10 +52,6 @@ class FireDetectionService:
         """
         self._api_key = api_key or os.environ.get("FIRMS_API_KEY", "")
 
-    # ------------------------------------------------------------------
-    # Public API
-    # ------------------------------------------------------------------
-
     def get_fires(
         self,
         lat: float,
@@ -96,10 +92,6 @@ class FireDetectionService:
             return []
 
         return self._parse_csv(text)
-
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
 
     def _build_url(
         self,
@@ -175,7 +167,9 @@ class FireDetectionService:
 
     @staticmethod
     def _bbox_from_center(
-        lat: float, lon: float, radius_km: float,
+        lat: float,
+        lon: float,
+        radius_km: float,
     ) -> tuple[float, float, float, float]:
         """Convert a center point + radius to [west, south, east, north]."""
         dlat = radius_km / 111.0
