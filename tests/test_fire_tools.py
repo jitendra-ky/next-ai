@@ -92,9 +92,9 @@ class TestFireDetectionService(unittest.TestCase):
         fires = self.service.get_fires(28.61, 77.21)
 
         confidences = [f["confidence_pct"] for f in fires]
-        self.assertIn(90, confidences)   # "high"
-        self.assertIn(70, confidences)   # "nom"
-        self.assertIn(30, confidences)   # "low"
+        self.assertIn(90, confidences)  # "high"
+        self.assertIn(70, confidences)  # "nom"
+        self.assertIn(30, confidences)  # "low"
 
     @patch("src.services.fire_service.requests.get")
     def test_empty_response_returns_empty_list(self, mock_get: MagicMock) -> None:
