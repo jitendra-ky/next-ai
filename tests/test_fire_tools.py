@@ -34,31 +34,31 @@ _EMPTY_FIRMS_CSV = _csv_rows()
 class TestFireDetectionService(unittest.TestCase):
     """Tests for the FireDetectionService class."""
 
-    def setUp(self) -> None:
+    def setUp(self) -> None:  # noqa: D102
         self.service = FireDetectionService(api_key="test_key_123")
 
     # -- Constructor -------------------------------------------------------
 
-    def test_init_with_explicit_key(self) -> None:
+    def test_init_with_explicit_key(self) -> None:  # noqa: D102
         svc = FireDetectionService(api_key="abc")
         self.assertIsNotNone(svc)
 
     @patch.dict("os.environ", {"FIRMS_API_KEY": "env_key"})
-    def test_init_from_env_var(self) -> None:
+    def test_init_from_env_var(self) -> None:  # noqa: D102
         svc = FireDetectionService()
         self.assertIsNotNone(svc)
 
-    def test_raises_without_key_at_call_time(self) -> None:
+    def test_raises_without_key_at_call_time(self) -> None:  # noqa: D102
         with (
             patch.dict("os.environ", {}, clear=True),
-            self.assertRaises(ValueError),
+            self.assertRaises(ValueError),  # noqa: PT027
         ):
             FireDetectionService().get_fires(28.61, 77.21)
 
     # -- CSV parsing -------------------------------------------------------
 
     @patch("src.services.fire_service.requests.get")
-    def test_get_fires_returns_parsed_list(self, mock_get: MagicMock) -> None:
+    def test_get_fires_returns_parsed_list(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = _SAMPLE_FIRMS_CSV
         mock_resp.raise_for_status.return_value = None
@@ -83,7 +83,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertEqual(first["source_type"], "fire")
 
     @patch("src.services.fire_service.requests.get")
-    def test_confidence_mapping(self, mock_get: MagicMock) -> None:
+    def test_confidence_mapping(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = _SAMPLE_FIRMS_CSV
         mock_resp.raise_for_status.return_value = None
@@ -97,7 +97,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertIn(30, confidences)  # "low"
 
     @patch("src.services.fire_service.requests.get")
-    def test_empty_response_returns_empty_list(self, mock_get: MagicMock) -> None:
+    def test_empty_response_returns_empty_list(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = ""
         mock_resp.raise_for_status.return_value = None
@@ -106,7 +106,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertEqual(self.service.get_fires(28.61, 77.21), [])
 
     @patch("src.services.fire_service.requests.get")
-    def test_csv_header_only_returns_empty_list(self, mock_get: MagicMock) -> None:
+    def test_csv_header_only_returns_empty_list(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = _EMPTY_FIRMS_CSV
         mock_resp.raise_for_status.return_value = None
@@ -115,13 +115,13 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertEqual(self.service.get_fires(28.61, 77.21), [])
 
     @patch("src.services.fire_service.requests.get")
-    def test_api_error_returns_empty_list(self, mock_get: MagicMock) -> None:
+    def test_api_error_returns_empty_list(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_get.side_effect = req.ConnectionError("connection refused")
 
         self.assertEqual(self.service.get_fires(28.61, 77.21), [])
 
     @patch("src.services.fire_service.requests.get")
-    def test_401_error_returns_empty_list(self, mock_get: MagicMock) -> None:
+    def test_401_error_returns_empty_list(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.raise_for_status.side_effect = req.HTTPError(
             response=MagicMock(status_code=401),
@@ -131,7 +131,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertEqual(self.service.get_fires(28.61, 77.21), [])
 
     @patch("src.services.fire_service.requests.get")
-    def test_radius_is_clamped(self, mock_get: MagicMock) -> None:
+    def test_radius_is_clamped(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = _EMPTY_FIRMS_CSV
         mock_resp.raise_for_status.return_value = None
@@ -144,7 +144,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertIn("/5", call_url)  # days param is last
 
     @patch("src.services.fire_service.requests.get")
-    def test_api_url_contains_bbox(self, mock_get: MagicMock) -> None:
+    def test_api_url_contains_bbox(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = _EMPTY_FIRMS_CSV
         mock_resp.raise_for_status.return_value = None
@@ -165,7 +165,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertGreater(float(coords[3]), 28.61)
 
     @patch("src.services.fire_service.requests.get")
-    def test_malformed_rows_are_skipped(self, mock_get: MagicMock) -> None:
+    def test_malformed_rows_are_skipped(self, mock_get: MagicMock) -> None:  # noqa: D102
         bad_csv = _csv_rows(
             "not_a_number,77.2090,320.5,1.0,1.0,2025-07-20,0345,N,high,2.0,298.1,45.2,D",
             "28.6200,77.2150,310.2,1.2,1.1,2025-07-20,0345,N,nom,2.0,295.0,22.8,D",
@@ -181,7 +181,7 @@ class TestFireDetectionService(unittest.TestCase):
         self.assertEqual(fires[0]["lat"], 28.6200)
 
     @patch("src.services.fire_service.requests.get")
-    def test_fire_ids_are_unique(self, mock_get: MagicMock) -> None:
+    def test_fire_ids_are_unique(self, mock_get: MagicMock) -> None:  # noqa: D102
         mock_resp = MagicMock()
         mock_resp.text = _SAMPLE_FIRMS_CSV
         mock_resp.raise_for_status.return_value = None
@@ -197,7 +197,7 @@ class TestFireDetectionTool(unittest.TestCase):
     """Tests for the LangChain tool wrapper."""
 
     @patch("src.fire_tools._fire_service")
-    def test_tool_returns_fire_list(self, mock_svc: MagicMock) -> None:
+    def test_tool_returns_fire_list(self, mock_svc: MagicMock) -> None:  # noqa: D102
         mock_svc.get_fires.return_value = [
             {
                 "fire_id": "firms_28.61_77.21_0",
@@ -225,7 +225,7 @@ class TestFireDetectionTool(unittest.TestCase):
         self.assertEqual(result[0]["fire_id"], "firms_28.61_77.21_0")
 
     @patch("src.fire_tools._fire_service")
-    def test_tool_empty_results(self, mock_svc: MagicMock) -> None:
+    def test_tool_empty_results(self, mock_svc: MagicMock) -> None:  # noqa: D102
         mock_svc.get_fires.return_value = []
 
         result = fire_detection_tool.invoke(
@@ -235,7 +235,7 @@ class TestFireDetectionTool(unittest.TestCase):
         self.assertEqual(result, [])
 
     @patch("src.fire_tools._fire_service")
-    def test_tool_default_radius(self, mock_svc: MagicMock) -> None:
+    def test_tool_default_radius(self, mock_svc: MagicMock) -> None:  # noqa: D102
         mock_svc.get_fires.return_value = []
 
         fire_detection_tool.invoke({"lat": 28.61, "lon": 77.21})
