@@ -52,6 +52,10 @@ class FireDetectionService:
         """
         self._api_key = api_key or os.environ.get("FIRMS_API_KEY", "")
 
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
     def get_fires(
         self,
         lat: float,
@@ -71,7 +75,8 @@ class FireDetectionService:
             days: Number of past days to query (1-5, clamped).
 
         Returns:
-            List of fire detection dicts compatible with ``fire_to_cso()``.
+            List of fire detection dicts with fire_id, lat, lon, frp_mw,
+            confidence_pct, brightness_k, scan, track, daynight, acq_date.
 
         Raises:
             ValueError: If no API key is available.
@@ -92,6 +97,10 @@ class FireDetectionService:
             return []
 
         return self._parse_csv(text)
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
 
     def _build_url(
         self,
