@@ -52,6 +52,10 @@ class FireDetectionService:
         """
         self._api_key = api_key or os.environ.get("FIRMS_API_KEY", "")
 
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
     def get_fires(
         self,
         lat: float,
@@ -92,6 +96,10 @@ class FireDetectionService:
             return []
 
         return self._parse_csv(text)
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
 
     def _build_url(
         self,
