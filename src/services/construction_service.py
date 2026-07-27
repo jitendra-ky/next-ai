@@ -2,10 +2,11 @@
 
 from geopy.distance import geodesic
 
+from src.services.base_source import BaseSource
 from src.services.overpass_service import OverpassService
 
 
-class ConstructionService:
+class ConstructionService(BaseSource):
     """Fetches construction site data from Overpass API and classifies by confidence."""
 
     def __init__(self) -> None:
@@ -99,3 +100,27 @@ class ConstructionService:
             )
 
         return sites
+
+    def to_cso(self, raw_site: dict) -> dict:
+        """Convert a raw construction site dictionary into a Common Source Object (CSO).
+
+        Args:
+        ----
+            raw_site: The local site representation returned by get_sites().
+
+        Returns:
+        -------
+            A standardized CSO dictionary representing the construction site.
+
+        """
+        return {
+            "source_id": raw_site.get("site_id"),
+            "source_type": raw_site.get("source_type", "construction"),
+            "location": {
+                "lat": raw_site.get("lat"),
+                "lon": raw_site.get("lon"),
+            },
+            "detection_confidence": raw_site.get("confidence"),
+            "distance_km": raw_site.get("distance_km"),
+            "raw_tags": raw_site.get("tags", {}),
+        }
