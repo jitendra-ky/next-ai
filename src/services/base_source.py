@@ -3,6 +3,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from src.services.cso import CommonSourceObject
+
 
 class BaseSource(ABC):
     """Abstract base class providing a unified interface for detecting pollutant sources.
@@ -34,16 +36,21 @@ class BaseSource(ABC):
         """
 
     @abstractmethod
-    def to_cso(self, raw_site: Any) -> dict:  # noqa: ANN401
-        """Convert a local/raw source object into a Common Source Object (CSO) dictionary.
+    def to_cso(
+        self,
+        raw_site: Any,  # noqa: ANN401
+        retrieved_at: str | None = None,
+    ) -> CommonSourceObject:
+        """Convert a local/raw source object into a Common Source Object (CSO) dataclass.
 
         Args:
         ----
             raw_site: The local source representation returned by get_sites().
+            retrieved_at: Optional ISO 8601 timestamp string for provenance.
 
         Returns:
         -------
-            A standardized CSO dictionary representing the source.
+            A standardized CSO dataclass instance representing the source.
 
         """
 
@@ -52,7 +59,8 @@ class BaseSource(ABC):
         lat: float,
         lon: float,
         radius_km: float = 3,
-    ) -> list[dict]:
+        retrieved_at: str | None = None,
+    ) -> list[CommonSourceObject]:
         """Fetch all sources in a circular area and return them as Common Source Objects (CSOs).
 
         Args:
@@ -60,11 +68,12 @@ class BaseSource(ABC):
             lat: Latitude of the center point.
             lon: Longitude of the center point.
             radius_km: Search radius in kilometers (default 3).
+            retrieved_at: Optional ISO 8601 timestamp string for provenance.
 
         Returns:
         -------
-            List of standardized CSO dictionaries for all sources found in the area.
+            List of standardized CSO dataclass instances for all sources found in the area.
 
         """
         raw_sites = self.get_sites(lat, lon, radius_km)
-        return [self.to_cso(site) for site in raw_sites]
+        return [self.to_cso(site, retrieved_at=retrieved_at) for site in raw_sites]
